@@ -1,0 +1,21 @@
+{
+    "title": "Notion Blocks to HTML Actor",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "dbPageID": {
+            "title": "Notion Page ID",
+            "type": "string",
+            "description": "Provide a specific term to filter tweets containing this term in the text.",
+            "editor": "textfield"
+        },
+        "notionToken": {
+            "title": "Notion App Token",
+            "type": "string",
+            "description": "Provide your Notion App's Token (find it under your App's OAuth & Permissions tab)",
+            "editor": "textfield",
+            "isSecret": true
+        }
+    },
+    "required": ["dbPageID", "notionToken"]
+}
