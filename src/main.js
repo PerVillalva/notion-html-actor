@@ -1,11 +1,11 @@
 import { Actor, Dataset } from "apify";
-import { processPages } from "./notion.js";
+import { blocksToMD } from "./notion.js";
 
 await Actor.init();
 
 const { notionToken, dbPageID } = await Actor.getInput();
 
-const result = await processPages(notionToken, dbPageID);
+const result = await blocksToMD(notionToken, dbPageID);
 
 await Dataset.pushData(result);
 

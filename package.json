@@ -1,25 +1,24 @@
 {
-	"name": "notion-html",
-	"version": "0.0.1",
-	"type": "module",
-	"description": "This is a boilerplate of an Apify Actor.",
-	"engines": {
-		"node": ">=18.0.0"
-	},
-	"dependencies": {
-		"@notion-render/bookmark-plugin": "^0.0.2",
-		"@notion-render/client": "^0.0.2",
-		"@notion-render/hljs-plugin": "^0.0.2",
-		"@notionhq/client": "^2.2.14",
-		"apify": "^3.1.10",
-		"crawlee": "^3.5.4"
-	},
-	"scripts": {
-		"start": "node ./src/main.js",
-		"lint": "./node_modules/.bin/eslint ./src --ext .js,.jsx",
-		"lint:fix": "./node_modules/.bin/eslint ./src --ext .js,.jsx --fix",
-		"test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"
-	},
-	"author": "It's not you it's me",
-	"license": "ISC"
+    "name": "notion-html",
+    "version": "0.0.1",
+    "type": "module",
+    "description": "This is a boilerplate of an Apify Actor.",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "dependencies": {
+        "@notionhq/client": "^2.2.14",
+        "apify": "^3.1.10",
+        "crawlee": "^3.5.4",
+        "notion-to-md": "^3.1.1",
+        "showdown": "^2.1.0"
+    },
+    "scripts": {
+        "start": "node ./src/main.js",
+        "lint": "./node_modules/.bin/eslint ./src --ext .js,.jsx",
+        "lint:fix": "./node_modules/.bin/eslint ./src --ext .js,.jsx --fix",
+        "test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"
+    },
+    "author": "It's not you it's me",
+    "license": "ISC"
 }

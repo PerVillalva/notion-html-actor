@@ -1,45 +1,26 @@
 import { Client } from "@notionhq/client";
-import hljsPlugin from "@notion-render/hljs-plugin";
-import bookmarkPlugin from "@notion-render/bookmark-plugin";
-import { NotionRenderer } from "@notion-render/client";
+import { NotionToMarkdown } from "notion-to-md";
+import showdown from "showdown";
 
-async function getPageContent(pageId, notion) {
-    let results = [];
-    let hasMore = true;
-    let startCursor = undefined;
-
-    while (hasMore) {
-        const response = await notion.blocks.children.list({
-            block_id: pageId,
-            start_cursor: startCursor,
-            page_size: 100, // you can set the maximum page size to 100
-        });
-
-        results = [...results, ...response.results];
-        hasMore = response.has_more;
-        startCursor = response.next_cursor;
-    }
-
-    return results;
-}
-
-export async function processPages(token, pageID) {
+export async function blocksToMD(token, pageID) {
     const notionClient = new Client({ auth: token });
 
-    const content = await getPageContent(pageID, notionClient);
-
-    const notionRenderer = new NotionRenderer({
-        client: notionClient,
+    const n2m = new NotionToMarkdown({
+        notionClient: notionClient,
+        config: {
+            separateChildPage: true, // default: false
+        },
     });
 
-    notionRenderer.use(hljsPlugin({}));
-    notionRenderer.use(bookmarkPlugin(undefined));
+    const mdblocks = await n2m.pageToMarkdown(pageID);
+    mdblocks.forEach((block) =>
+        block.type === "table" ? console.log(block) : ""
+    );
+    const mdString = n2m.toMarkdownString(mdblocks);
 
-    const articleHtml = await notionRenderer.render(...content);
+    const converter = new showdown.Converter();
+    converter.setOption("tables", true);
+    const outputHTML = converter.makeHtml(mdString.parent);
 
-    const processedPages = {
-        articleContent: articleHtml,
-    };
-
-    return processedPages;
+    return { articleContent: outputHTML };
 }
