@@ -1,21 +1,50 @@
 {
-    "title": "Notion Blocks to HTML Actor",
+    "title": "Notion Content to Ghost Blog",
     "type": "object",
     "schemaVersion": 1,
     "properties": {
-        "dbPageID": {
-            "title": "Notion Page ID",
+        "notionDatabaseID": {
+            "sectionCaption": "Notion Configuration",
+            "title": "Notion Database ID",
             "type": "string",
-            "description": "Provide a specific term to filter tweets containing this term in the text.",
+            "description": "Enter the ID of the Notion database you wish to convert to HTML. This ID can be found in the database URL.",
             "editor": "textfield"
         },
         "notionToken": {
             "title": "Notion App Token",
             "type": "string",
-            "description": "Provide your Notion App's Token (find it under your App's OAuth & Permissions tab)",
+            "description": "Enter your Notion integration token. This token is required for authentication and can be generated in your Notion settings under 'Integrations'.",
+            "editor": "textfield",
+            "isSecret": true
+        },
+        "notionFilterValue": {
+            "sectionCaption": "Notion Database Filter (by Status)",
+            "title": "Status value to filter articles by",
+            "type": "string",
+            "description": "Specify the status value to filter database entries. Only entries matching this status will be processed.",
+            "editor": "textfield"
+        },
+        "notionUpdatedValue": {
+            "title": "New Status Value (after the automation is completed)",
+            "type": "string",
+            "description": "Define the new status value for entries after processing. This value will be applied to the 'Status' property of each processed entry.",
+            "editor": "textfield",
+            "isSecret": true
+        },
+        "ghostURL": {
+            "sectionCaption": "Ghost Blog Configuration",
+            "title": "Ghost API URL",
+            "type": "string",
+            "description": "Provide the URL to your Ghost blog's Content API. This URL is used to connect and transmit data to your Ghost blog.",
+            "editor": "textfield"
+        },
+        "ghostKey": {
+            "title": "Ghost Content API Key",
+            "type": "string",
+            "description": "Enter your Ghost Content API Key. This key allows the actor to authenticate and interact with your Ghost blog's Content API.",
             "editor": "textfield",
             "isSecret": true
         }
     },
-    "required": ["dbPageID", "notionToken"]
+    "required": ["notionDatabaseID", "notionToken", "ghostURL", "ghostKey"]
 }
