@@ -31,8 +31,7 @@ export async function findDatabaseItems(databaseId, token, filterValue) {
 
     const pageInfo = response.results.map((item) => ({
         pageId: item.id,
-        title: item.properties.Title.title[0].text.content,
-        authors: item.properties.Author.people.map((author) => author.name),
+        title: item.properties.Topic.title[0].text.content,
     }));
 
     return pageInfo;

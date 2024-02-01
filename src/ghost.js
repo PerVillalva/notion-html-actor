@@ -19,20 +19,13 @@ function ghostAPIConnection(ghostUrl, ghostKey) {
 /**
  * Creates a new post in Ghost.
  */
-export async function createPost(
-    ghostUrl,
-    ghostKey,
-    htmlContent,
-    title,
-    authors
-) {
+export async function createPost(ghostUrl, ghostKey, htmlContent, title) {
     const api = ghostAPIConnection(ghostUrl, ghostKey);
 
     try {
         await api.posts.add(
             {
                 title: title,
-                authors: authors,
                 html: htmlContent,
                 status: POST_STATUS_DRAFT,
             },
