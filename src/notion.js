@@ -21,7 +21,7 @@ export async function findDatabaseItems(databaseId, token, filterValue) {
     if (filterValue) {
         query.filter = {
             property: STATUS_PROPERTY,
-            status: {
+            select: {
                 equals: filterValue,
             },
         };
@@ -48,7 +48,7 @@ export async function updateItemStatus(pageId, token, updatedValue) {
         page_id: pageId,
         properties: {
             [STATUS_PROPERTY]: {
-                status: {
+                select: {
                     name: updatedValue,
                 },
             },

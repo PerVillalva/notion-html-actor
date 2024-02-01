@@ -28,8 +28,7 @@
             "title": "New Status Value (after the automation is completed)",
             "type": "string",
             "description": "Define the new status value for entries after processing. This value will be applied to the 'Status' property of each processed entry.",
-            "editor": "textfield",
-            "isSecret": true
+            "editor": "textfield"
         },
         "ghostURL": {
             "sectionCaption": "Ghost Blog Configuration",
