@@ -25,6 +25,8 @@ try {
 
         const result = await blocksToMD(notionToken, pageId);
 
+        await Dataset.pushData(result);
+
         await createPost(ghostURL, ghostKey, result.articleContent, title);
 
         log.info(`✅ "${title}" article was successfully created on Ghost.`);
@@ -36,8 +38,6 @@ try {
                 `🔁 "${title}" item status updated from "${notionFilterValue}" to "${notionUpdatedValue}" in Notion.`
             );
         }
-
-        await Dataset.pushData(result);
     }
 } catch (error) {
     log.error(error);
