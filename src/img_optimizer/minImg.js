@@ -11,6 +11,14 @@ export async function optimizeImg(html) {
         const img = imgElements[i];
         const imgUrl = $(img).attr("src");
 
+        // Extract the image name from the URL
+        const imgName = $(img)
+            .attr("alt")
+            .toLowerCase() // Convert all letters to lowercase.
+            .replace(/\s+/g, "-") // Replace all spaces with hyphens.
+            .replace(/[^a-z0-9-]/g, "") // Remove all characters that are not a-z, 0-9, or -.
+            .replace(/^-+|-+$/g, ""); // Remove leading and trailing hyphens.;
+
         // Download the image
         const response = await axios.get(imgUrl, {
             responseType: "arraybuffer",
@@ -26,12 +34,12 @@ export async function optimizeImg(html) {
         const store = await KeyValueStore.open();
 
         // Store the optimized image in the key-value store
-        await store.setValue(`img_${i}`, optimizedImgBuffer, {
+        await store.setValue(imgName, optimizedImgBuffer, {
             contentType: "image/webp",
         });
 
         // Get saved image's URL
-        const optimizedImgUrl = store.getPublicUrl(`img_${i}`);
+        const optimizedImgUrl = store.getPublicUrl(imgName);
 
         // Replace the original image URL with the URL of the optimized image
         $(img).attr("src", optimizedImgUrl);
