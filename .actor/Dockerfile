@@ -1,7 +1,7 @@
 # Specify the base Docker image. You can read more about
 # the available images at https://docs.apify.com/sdk/js/docs/guides/docker-images
 # You can also use any other image from Docker Hub.
-FROM apify/actor-node:18
+FROM apify/actor-node:20
 
 # Copy just package.json and package-lock.json
 # to speed up the build using Docker layer cache.
@@ -19,6 +19,9 @@ RUN npm --quiet set progress=false \
     && echo "NPM version:" \
     && npm --version \
     && rm -r ~/.npm
+
+# Install sharp with specific settings
+RUN SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm_config_arch=x64 npm_config_platform=linuxmusl npm install sharp@0.32.1
 
 # Next, copy the remaining files and directories with the source code.
 # Since we do this after NPM install, quick build will be really fast

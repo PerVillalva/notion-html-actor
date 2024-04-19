@@ -1,6 +1,7 @@
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import showdown from "showdown";
+import { optimizeImg } from "./img_optimizer/minImg.js";
 
 const STATUS_PROPERTY = "Status";
 
@@ -75,5 +76,7 @@ export async function blocksToMD(token, pageID) {
     converter.setOption("tables", true);
     const outputHTML = converter.makeHtml(mdString.parent);
 
-    return { articleContent: outputHTML };
+    const optimizedImgHTML = await optimizeImg(outputHTML);
+
+    return { articleContent: optimizedImgHTML };
 }
