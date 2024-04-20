@@ -23,11 +23,17 @@ export async function optimizeImg(html) {
         const response = await axios.get(imgUrl, {
             responseType: "arraybuffer",
         });
+        const cType = response.headers["content-type"];
+
+        // Skip SVG images
+        if (cType === "image/svg+xml") {
+            continue;
+        }
         const imgBuffer = Buffer.from(response.data, "binary");
 
         // Optimize and convert the image to webp
-        const optimizedImgBuffer = await sharp(imgBuffer)
-            .webp({ lossless: true }) // Convert the image to webp format in lossless mode.
+        const optimizedImgBuffer = await sharp(imgBuffer, { animated: true })
+            .webp({ lossy: true }) // Convert the image to webp format in lossless mode.
             .toBuffer();
 
         // Open KeyValueStore
