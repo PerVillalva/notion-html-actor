@@ -2,6 +2,7 @@ import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import showdown from "showdown";
 import { optimizeImg } from "./img_optimizer/minImg.js";
+import { optimizeImages, compressionMode } from "./main.js";
 
 const STATUS_PROPERTY = "Status";
 
@@ -76,7 +77,11 @@ export async function blocksToMD(token, pageID) {
     converter.setOption("tables", true);
     const outputHTML = converter.makeHtml(mdString.parent);
 
-    const optimizedImgHTML = await optimizeImg(outputHTML);
+    let finalContent = outputHTML;
 
-    return { articleContent: optimizedImgHTML };
+    if (optimizeImages) {
+        finalContent = await optimizeImg(outputHTML, compressionMode);
+    }
+
+    return { articleContent: finalContent };
 }

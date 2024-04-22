@@ -5,13 +5,15 @@ import { updateKeyValueStoreName } from "./img_optimizer/apifyData.js";
 
 await Actor.init();
 
-const {
+export const {
     notionToken,
     notionDatabaseID,
     notionFilterValue,
     notionUpdatedValue,
     ghostURL,
     ghostKey,
+    optimizeImages,
+    compressionMode,
 } = await Actor.getInput();
 
 try {

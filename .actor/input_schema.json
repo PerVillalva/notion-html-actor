@@ -43,6 +43,22 @@
             "description": "Enter your Ghost Content API Key. This key allows the actor to authenticate and interact with your Ghost blog's Content API.",
             "editor": "textfield",
             "isSecret": true
+        },
+        "optimizeImages": {
+            "sectionCaption": "Image Compression and Optimization",
+            "title": "Optimize Images",
+            "type": "boolean",
+            "description": "If enabled, this feature will convert all JPEG and PNG images to the WebP format. GIFs will be converted to animated WebP files.",
+            "default": true
+        },
+        "compressionMode": {
+            "title": "Image Compression Mode",
+            "type": "string",
+            "editor": "select",
+            "description": "Choose the image compression mode. The default option is 'lossy,' which is preferred because it results in smaller file sizes. If you notice a significant drop in image quality, consider opting for the 'lossless' instead.",
+            "default": "lossy",
+            "enum": ["lossy", "lossless"],
+            "enumTitles": ["Lossy", "Lossless"]
         }
     },
     "required": ["notionDatabaseID", "notionToken", "ghostURL", "ghostKey"]

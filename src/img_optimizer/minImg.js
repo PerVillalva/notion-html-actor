@@ -3,7 +3,7 @@ import * as cheerio from "cheerio";
 import sharp from "sharp";
 import { KeyValueStore } from "apify";
 
-export async function optimizeImg(html) {
+export async function optimizeImg(html, compressionMode) {
     const $ = cheerio.load(html);
     const imgElements = $("img");
 
@@ -31,9 +31,11 @@ export async function optimizeImg(html) {
         }
         const imgBuffer = Buffer.from(response.data, "binary");
 
+        const isLossless = compressionMode === "lossless";
+
         // Optimize and convert the image to webp
         const optimizedImgBuffer = await sharp(imgBuffer, { animated: true })
-            .webp({ lossy: true }) // Convert the image to webp format in lossless mode.
+            .webp({ lossless: isLossless }) // Convert the image to webp.
             .toBuffer();
 
         // Open KeyValueStore
