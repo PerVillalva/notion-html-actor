@@ -1,7 +1,7 @@
 import { Actor, Dataset, log } from "apify";
 import { blocksToMD, findDatabaseItems, updateItemStatus } from "./notion.js";
 import { createPost } from "./ghost.js";
-import { updateKeyValueStoreName } from "./img_optimizer/apifyData.js";
+import { updateKeyValueStoreName } from "./utils/apifyData.js";
 
 await Actor.init();
 
