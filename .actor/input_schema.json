@@ -61,5 +61,5 @@
             "enumTitles": ["Lossy", "Lossless"]
         }
     },
-    "required": ["notionDatabaseID", "notionToken", "ghostURL", "ghostKey"]
+    "required": ["notionDatabaseID", "notionToken"]
 }

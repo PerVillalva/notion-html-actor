@@ -41,9 +41,16 @@ try {
 
         await updateKeyValueStoreName(storeTitle);
 
-        await createPost(ghostURL, ghostKey, result.articleContent, title);
-
-        log.info(`✅ "${title}" article was successfully created on Ghost.`);
+        if (ghostKey) {
+            await createPost(ghostURL, ghostKey, result.articleContent, title);
+            log.info(
+                `✅ "${title}" article was successfully created on Ghost.`
+            );
+        } else {
+            log.info(
+                "Ghost Key was not provided. The post status will only be updated in Notion and the converted text available in the dataset."
+            );
+        }
 
         if (notionUpdatedValue) {
             await updateItemStatus(pageId, notionToken, notionUpdatedValue);
