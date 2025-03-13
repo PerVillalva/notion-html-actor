@@ -28,7 +28,10 @@ try {
 
         const result = await blocksToMD(notionToken, pageId);
 
-        await Dataset.pushData(result);
+        await Dataset.pushData({
+            html: result.articleContent,
+            markdown: result.mdContent,
+        });
 
         const storeTitle = title
             .toLowerCase() // Convert all letters to lowercase.

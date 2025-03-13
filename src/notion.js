@@ -5,6 +5,7 @@ import { optimizeImg } from "./utils/minImg.js";
 import { optimizeImages, compressionMode } from "./main.js";
 import he from "he";
 import { cleanHTML } from "./utils/cleanHTML.js";
+import { cleanMarkdown } from "./utils/cleanMarkdown.js";
 
 const STATUS_PROPERTY = "Status";
 
@@ -74,6 +75,7 @@ export async function blocksToMD(token, pageID) {
 
     const mdblocks = await n2m.pageToMarkdown(pageID);
     const mdString = n2m.toMarkdownString(mdblocks);
+    const cleanMD = cleanMarkdown(mdString.parent);
 
     const converter = new showdown.Converter();
     converter.setOption("tables", true);
@@ -87,5 +89,8 @@ export async function blocksToMD(token, pageID) {
 
     const decodedHtmlContent = he.decode(finalContent);
 
-    return { articleContent: decodedHtmlContent };
+    return {
+        articleContent: decodedHtmlContent,
+        mdContent: cleanMD,
+    };
 }
