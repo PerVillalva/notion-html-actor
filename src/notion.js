@@ -87,5 +87,7 @@ export async function blocksToMD(token, pageID) {
 
     const decodedHtmlContent = he.decode(finalContent);
 
-    return { articleContent: decodedHtmlContent };
+    const lexicalCardHTML = `<!--kg-card-begin: html-->${decodedHtmlContent}<!--kg-card-end: html-->`;
+
+    return { articleContent: lexicalCardHTML };
 }
