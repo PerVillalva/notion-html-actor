@@ -4,9 +4,22 @@ import sharp from "sharp";
 import { KeyValueStore, log } from "apify";
 
 export async function optimizeImg(html, compressionMode) {
-    const $ = cheerio.load(html, null);
-    const imgElements = $("img");
+    // Use cheerio with specific options to preserve structure
+    const $ = cheerio.load(
+        html,
+        {
+            withStartIndices: false,
+            withEndIndices: false,
+            xmlMode: false,
+            decodeEntities: false,
+        },
+        false
+    ); // Parse as HTML fragment, not full document
 
+    const imgElements = $("img");
+    const imageData = [];
+
+    // First pass: collect all image data without modifying the DOM
     for (let i = 0; i < imgElements.length; i++) {
         const img = imgElements[i];
         const imgUrl = $(img).attr("src");
@@ -17,12 +30,25 @@ export async function optimizeImg(html, compressionMode) {
         }
 
         // Extract the image name from the URL
-        const imgName = $(img)
-            .attr("alt")
-            .toLowerCase() // Convert all letters to lowercase.
-            .replace(/\s+/g, "-") // Replace all spaces with hyphens.
-            .replace(/[^a-z0-9-]/g, "") // Remove all characters that are not a-z, 0-9, or -.
-            .replace(/^-+|-+$/g, ""); // Remove leading and trailing hyphens.;
+        const imgName =
+            $(img)
+                .attr("alt")
+                ?.toLowerCase() // Convert all letters to lowercase.
+                .replace(/\s+/g, "-") // Replace all spaces with hyphens.
+                .replace(/[^a-z0-9-]/g, "") // Remove all characters that are not a-z, 0-9, or -.
+                .replace(/^-+|-+$/g, "") || `image-${i}`; // Remove leading and trailing hyphens or use fallback
+
+        imageData.push({
+            element: img,
+            url: imgUrl,
+            name: imgName,
+            index: i,
+        });
+    }
+
+    // Second pass: process images sequentially to maintain order
+    for (const imageInfo of imageData) {
+        const { element: img, url: imgUrl, name: imgName } = imageInfo;
 
         try {
             log.info(`Processing image: ${imgUrl}`);
@@ -65,10 +91,12 @@ export async function optimizeImg(html, compressionMode) {
             console.log(`Image optimized and replaced: ${imgUrl}`);
         } catch (error) {
             console.error(`Error processing image: ${imgUrl}`, error);
+            // Keep original image URL if upload fails
         }
     }
 
-    const optimizedHTML = $.html();
+    // Get the HTML content without wrapping html/body tags
+    const optimizedHTML = $("body").length > 0 ? $("body").html() : $.html();
 
     return optimizedHTML;
 }

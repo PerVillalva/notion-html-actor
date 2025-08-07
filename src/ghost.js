@@ -23,11 +23,14 @@ export async function createPost(ghostUrl, ghostKey, htmlContent, title) {
     const api = ghostAPIConnection(ghostUrl, ghostKey);
 
     try {
-        await api.posts.add({
-            title: title,
-            html: htmlContent,
-            status: POST_STATUS_DRAFT,
-        });
+        await api.posts.add(
+            {
+                title: title,
+                html: htmlContent,
+                status: POST_STATUS_DRAFT,
+            },
+            { source: "html" } // Tell the API to use HTML as the content source, instead of Lexical
+        );
     } catch (err) {
         console.error("Failed to create post:", err);
         throw err;
