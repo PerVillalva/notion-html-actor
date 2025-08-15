@@ -29,14 +29,16 @@ export async function optimizeImg(html, compressionMode) {
             continue;
         }
 
-        // Extract the image name from the URL
-        const imgName =
-            $(img)
-                .attr("alt")
-                ?.toLowerCase() // Convert all letters to lowercase.
-                .replace(/\s+/g, "-") // Replace all spaces with hyphens.
-                .replace(/[^a-z0-9-]/g, "") // Remove all characters that are not a-z, 0-9, or -.
-                .replace(/^-+|-+$/g, "") || `image-${i}`; // Remove leading and trailing hyphens or use fallback
+        // Extract and clean the image name from alt text
+        const rawAlt = $(img).attr("alt") || "image";
+        const cleanedAlt = rawAlt
+            .toLowerCase()
+            .replace(/\s+/g, "-")
+            .replace(/[^a-z0-9-]/g, "")
+            .replace(/^-+|-+$/g, "");
+
+        // Always include index to ensure uniqueness
+        const imgName = cleanedAlt ? `${cleanedAlt}-${i}` : `image-${i}`;
 
         imageData.push({
             element: img,
